@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/number_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textSize="18sp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@id/plus_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/userInput_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/plus_btn"
+        app:layout_constraintBottom_toBottomOf="@id/plus_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/plus_btn"
+        app:layout_constraintHorizontal_weight="1"
+        tools:layout_editor_absoluteY="343dp" />
+
+    <Button
+        android:id="@+id/plus_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="더하기"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintStart_toEndOf="@id/userInput_et"
+        app:layout_constraintEnd_toStartOf="@id/minus_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="340dp" />
+
+    <Button
+        android:id="@+id/minus_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="빼기"
+        app:layout_constraintTop_toTopOf="@id/plus_btn"
+        app:layout_constraintBottom_toBottomOf="@id/plus_btn"
+        app:layout_constraintStart_toEndOf="@id/plus_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="307dp"
+        tools:layout_editor_absoluteY="343dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
