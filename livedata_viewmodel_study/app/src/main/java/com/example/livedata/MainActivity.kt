@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.livedata.databinding.ActivityMainBinding
@@ -13,14 +14,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         private const val TAG = "로그"
     }
     lateinit var binding: ActivityMainBinding
-    lateinit var myNumberViewModel: MyNumberViewModel
+    // by viewModels()로 초기화 하는 방법
+    private val myNumberViewModel: MyNumberViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        myNumberViewModel = ViewModelProvider(this)[MyNumberViewModel::class.java]
+        // myNumberViewModel = ViewModelProvider(this)[MyNumberViewModel::class.java]
 
         // ViewModel의 LiveData에 접근
         myNumberViewModel.currentValue.observe(this, Observer {
