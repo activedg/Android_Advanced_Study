@@ -8,5 +8,5 @@ class GetSearchUseCase @Inject constructor(
     private val naverRepository: NaverRepository
 ) {
     // flow 학습하기
-    suspend fun execute() = naverRepository.getSearchResult()
+    suspend fun execute(type: String) = naverRepository.getSearchResult()
 }
