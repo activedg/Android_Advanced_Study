@@ -58,7 +58,8 @@ object NetworkModule{
                 request()
                     .newBuilder()
                     .addHeader("X-Naver-Client-Id", CLIENT_ID)
-                    .addHeader("X-Naver_Client-Secret", CLIENT_SECRET)
+                    .addHeader("X-Naver-Client-Secret", CLIENT_SECRET)
+                    .addHeader("Content-Type", "application/json")
                     .build()
             )
         }

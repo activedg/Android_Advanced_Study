@@ -14,7 +14,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
     override fun initView() {
         viewModel.searchLiveData.observe(this, Observer {
-
+            binding.tvResultDetail.text = it.toString()
         })
+
+        binding.btnSearch.setOnClickListener {
+            viewModel.getNaverSearchData(binding.etType.text.toString())
+        }
     }
 }

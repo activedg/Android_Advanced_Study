@@ -1,18 +1,13 @@
 package com.example.naversearchtest.data.remote
 
+import com.example.naversearchtest.domain.model.SearchData
 import com.example.naversearchtest.domain.model.SearchResponse
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface NaverApi {
-    @GET("/{type}")
+    @POST ("/v1/datalab/search")
     suspend fun getSearchResult(
-        @Header("X-Naver-Client-Id") id: String,
-        @Header("X-Naver_Client-Secret") pw: String,
-        @Path("type") type: String,
-        @Query("query") query: String
+        @Body data: SearchData
     ) : Response<SearchResponse>
 }
