@@ -18,11 +18,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        def naver_client_id = properties.getProperty('naver_client_id')
-        def naver_client_secret = properties.getProperty('naver_client_secret')
-        buildConfigField "String", "Naver_Client_Id", naver_client_id
-        buildConfigField "String", "Naver_Client_Secret", naver_client_secret
+        buildConfigField "String", "NAVER_CLIENT_ID", properties['naver_client_id']
+        buildConfigField "String", "NAVER_CLIENT_SECRET", properties['naver_client_secret']
     }
 
     buildFeatures {
@@ -31,15 +28,9 @@ android {
     }
 
     buildTypes {
-        debug{
-            resValue "string", "NAVER_CLIENT_ID", "${properties.getProperty("naver_client_id")}"
-            resValue "string", "NAVER_CLIENT_SECRET", "${properties.getProperty("naver_client_secret")}"
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "NAVER_CLIENT_ID", "${properties.getProperty("naver_client_id")}"
-            resValue "string", "NAVER_CLIENT_SECRET", "${properties.getProperty("naver_client_secret")}"
         }
     }
     compileOptions {

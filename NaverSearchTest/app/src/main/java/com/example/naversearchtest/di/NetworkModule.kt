@@ -1,9 +1,8 @@
 package com.example.naversearchtest.di
 
+import com.example.naversearchtest.BuildConfig
 import com.example.naversearchtest.data.remote.NaverApi
 import com.example.naversearchtest.utils.Utils.BASE_URL
-import com.example.naversearchtest.utils.Utils.CLIENT_ID
-import com.example.naversearchtest.utils.Utils.CLIENT_SECRET
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,8 +56,8 @@ object NetworkModule{
             proceed(
                 request()
                     .newBuilder()
-                    .addHeader("X-Naver-Client-Id", CLIENT_ID)
-                    .addHeader("X-Naver-Client-Secret", CLIENT_SECRET)
+                    .addHeader("X-Naver-Client-Id", BuildConfig.NAVER_CLIENT_ID)
+                    .addHeader("X-Naver-Client-Secret", BuildConfig.NAVER_CLIENT_SECRET)
                     .addHeader("Content-Type", "application/json")
                     .build()
             )
