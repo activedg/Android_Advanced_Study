@@ -1,7 +1,7 @@
 package com.example.naversearchtest.di
 
 import com.example.naversearchtest.BuildConfig
-import com.example.naversearchtest.data.remote.NaverApi
+import com.example.naversearchtest.data.remote.NaverService
 import com.example.naversearchtest.utils.Utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -12,7 +12,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -32,12 +31,6 @@ object NetworkModule{
     @Singleton
     fun provideGsonConverterFactory() : GsonConverterFactory{
         return GsonConverterFactory.create()
-    }
-
-    @Provides
-    @Singleton
-    fun provideNaverApiClient(retrofit: Retrofit) : NaverApi{
-        return retrofit.create(NaverApi::class.java)
     }
 
     @Provides
