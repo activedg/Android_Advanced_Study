@@ -7,47 +7,46 @@ import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.composetest.data.AlignYourBodyElement
+import com.example.composetest.data.FavoriteCardElement
 import com.example.composetest.data.MessageTest
 import com.example.composetest.data.SampleData
 import com.example.composetest.ui.theme.ComposeTestTheme
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.exp
 
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<HelloViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -57,229 +56,249 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp(viewModel)
+                    MyApp()
                 }
             }
         }
     }
 }
 
-class HelloViewModel : ViewModel(){
-    private val _name = MutableLiveData("")
-    val name : LiveData<String>
-        get() = _name
-
-    fun onNameChange(newName: String){
-        _name.value = newName
+@Composable
+fun MyApp(){
+    ComposeTestTheme {
+        Scaffold(
+            bottomBar = {SootheBottomNavigation()}
+        ) { padding ->
+            HomeScreen(Modifier.padding(padding))
+        }
     }
 }
-
 @Composable
-fun MyApp(viewModel: HelloViewModel){
-    // State Hoisting
-    var shouldShowOnBoarding by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    val name: String by viewModel.name.observeAsState("")
-
-    if (shouldShowOnBoarding){
-        OnBoardingScreen (onContinuedClick = {shouldShowOnBoarding = false},
-            name=name, onNameChange={viewModel.onNameChange(it)} )
-    } else {
-        Conversation(messages = SampleData.conversationSample)
-    }
+fun SearchBar(
+    modifier: Modifier = Modifier
+){
+    TextField(
+        value = "",
+        onValueChange = {},
+        // Leading Icon 추가
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null)
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        placeholder = {
+            Text(stringResource(R.string.placeholder_search))
+        } ,
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .padding(horizontal = 16.dp)
+    )
 }
 
+val alignYourBodyData = ArrayList<AlignYourBodyElement>().apply {
+    add(AlignYourBodyElement(R.drawable.ab1_inversions, R.string.ab1_inversions))
+    add(AlignYourBodyElement(R.drawable.ab2_quick_yoga, R.string.ab2_quick_yoga))
+    add(AlignYourBodyElement(R.drawable.ab3_stretching, R.string.ab3_stretching))
+    add(AlignYourBodyElement(R.drawable.ab4_tabata, R.string.ab4_tabata))
+    add(AlignYourBodyElement(R.drawable.ab5_hiit, R.string.ab5_hiit))
+    add(AlignYourBodyElement(R.drawable.ab6_pre_natal_yoga, R.string.ab6_pre_natal_yoga))
+}
+
+val favoriteCardData = ArrayList<FavoriteCardElement>().apply {
+    add(FavoriteCardElement(R.drawable.fc1_short_mantras, R.string.fc2_nature_meditations))
+    add(FavoriteCardElement(R.drawable.fc2_nature_meditations, R.string.fc2_nature_meditations))
+    add(FavoriteCardElement(R.drawable.fc3_stress_and_anxiety, R.string.fc2_nature_meditations))
+    add(FavoriteCardElement(R.drawable.fc4_self_massage, R.string.fc2_nature_meditations))
+    add(FavoriteCardElement(R.drawable.fc5_overwhelmed, R.string.fc2_nature_meditations))
+    add(FavoriteCardElement(R.drawable.fc6_nightly_wind_down, R.string.fc2_nature_meditations))
+}
+
+
 @Composable
-fun MessageCard(msg: MessageTest) {
-    Row(modifier = Modifier.padding(all = 8.dp)) {
+fun AlignYourBodyRow(
+    modifier: Modifier = Modifier
+){
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.padding(horizontal = 16.dp)
+    ){
+        items(alignYourBodyData){
+            item -> AlignYourBody(drawable = item.drawable, text = item.text)
+        }
+    }
+}
+@Composable
+fun AlignYourBody(
+    @DrawableRes drawable : Int,
+    @StringRes text: Int,
+    modifier: Modifier = Modifier
+){
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
-            contentDescription = "launcher",
+            painter = painterResource(drawable),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(40.dp)
-                // 원 형태로 Clip
+                .size(88.dp)
                 .clip(CircleShape)
-                // border 설정
-                .border(1.5.dp, MaterialTheme.colorScheme.secondary, CircleShape),
-            contentScale = ContentScale.FillBounds
         )
-        // 수평 마진 추가
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // 메모리에 로컬 상태 저장
-        var isExpanded by rememberSaveable {
-            mutableStateOf(false)
-        }
-
-        // surface color 변경
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
-        )
-
-        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
-            Text(
-                text = msg.author,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium
+        Text(
+            text = stringResource(text),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.paddingFromBaseline(
+                top = 24.dp, bottom = 8.dp
             )
-            // 수직 마진 추가
-            Spacer(modifier = Modifier.height(4.dp))
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color = surfaceColor,
-                modifier = Modifier
-                    .animateContentSize()
-                    .padding(1.0.dp)
-            ) {
-                Text(
-                    text = msg.name,
-                    modifier = Modifier.padding(all = 4.0.dp),
-                    // click 된 경우 전부다 표시, 아니면 한줄만
-                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
-                    style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+fun FavoriteCollectionCardGrid(
+    modifier: Modifier = Modifier
+){
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .height(120.dp)
+            .padding(horizontal = 16.dp)
+    ){
+        items(favoriteCardData){
+           item -> FavoriteCollectionCard(
+            drawable = item.drawable,
+            text = item.text,
+            modifier = Modifier.height(56.dp)
+        )
+        }
+    }
+}
+
+@Composable
+fun FavoriteCollectionCard(
+    @DrawableRes drawable : Int,
+    @StringRes text: Int,
+    modifier: Modifier = Modifier
+){
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        modifier = Modifier
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.width(192.dp)
+                // matchParentSize로 parent 맞추기 가능
+        ) {
+           Image(
+               painter = painterResource(drawable),
+               contentDescription = null,
+               contentScale = ContentScale.Crop,
+               modifier = Modifier.size(56.dp)
+           )
+            Text(
+                text = stringResource(text),
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeSection(
+    @StringRes title: Int,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+){
+    Column(modifier) {
+        Text(
+            text = stringResource(title).uppercase(Locale.getDefault()),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
+                .padding(horizontal = 16.dp)
+        )
+        content()
+    }
+}
+
+@Composable
+private fun SootheBottomNavigation(
+    modifier: Modifier = Modifier
+) {
+    NavigationBar(modifier,
+        tonalElevation = 1.dp) {
+        NavigationBarItem(
+            // icon, label, selected, onclick
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Spa,
+                    contentDescription = null
                 )
-            }
-        }
-
-    }
-
-}
-
-@Composable
-fun OnBoardingScreen(onContinuedClick: () -> Unit, name: String, onNameChange : (String) -> Unit){
-    Surface{
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Welcome to Compose World")
-            Button(
-                modifier = Modifier.padding(vertical = 20.dp),
-                onClick = onContinuedClick
-            ) {
-                Text(text = "Continue")
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = "Hello $name",
-                modifier = Modifier.padding(bottom = 8.dp),
-                style = MaterialTheme.typography.titleLarge
-            )
-            OutlinedTextField(
-                value = name,
-                onValueChange = onNameChange,
-                label = { Text("Name")}
-            )
-        }
-
-    }
-}
-
-@Composable
-fun Conversation(messages: List<MessageTest>){
-    Column {
-        var expanded by remember {
-            mutableStateOf(false)
-        }
-        val extraPadding by animateDpAsState(
-            if (expanded) 48.dp else 0.dp,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessLow
-            )
+            },
+            label = {
+                Text(stringResource(R.string.bottom_navigation_home))
+            },
+            selected = true,
+            onClick = {}
+        )
+        NavigationBarItem(
+            // icon, label, selected, onclick
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(stringResource(R.string.bottom_navigation_profile))
+            },
+            selected = true,
+            onClick = {}
         )
 
-        Surface(
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(all = 4.dp)
-        ) {
-            Row(modifier = Modifier
-                .padding(12.dp)
-                .animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                        stiffness = Spring.StiffnessLow
-                    )
-                )) {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(12.dp),
-                ) {
-                    Text(text = "Hello, ")
-                    Text(
-                        text = "Name",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    )
-                    if (expanded){
-                        Text(
-                            text = ("Composem ipsum color sit lazy, " +
-                                    "padding theme elit, sed do bouncy. ").repeat(4),
-                            modifier = Modifier.padding(top = 10.dp)
-                        )
-                    }
-                }
+    }
+}
 
-                IconButton(
-                    onClick = { expanded = !expanded }) {
-                    Icon(
-                        imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        contentDescription = if (expanded) {
-                            stringResource(R.string.show_less)
-                        } else{
-                            stringResource(R.string.show_more)
-                        }
-                    )
-//                    Text(
-//                        if (expanded) "Show Less" else "Show More",
-//                        color = Color.White
-//                        )
-                }
-            }
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier
+){
+    Column(
+        modifier
+            .verticalScroll(rememberScrollState())
+            .padding(vertical = 16.dp),
+    ){
+        SearchBar()
+        HomeSection(R.string.align_your_body) {
+            AlignYourBodyRow()
         }
-        LazyColumn {
-            items(messages) { message ->
-                MessageCard(message)
-            }
+        HomeSection(R.string.favorite_collections) {
+            FavoriteCollectionCardGrid()
         }
     }
 }
 
-//@Preview(
-//    name = "Light Mode",
-//    showBackground = true
-//)
-//@Preview(
-//    uiMode = Configuration.UI_MODE_NIGHT_YES,
-//    name = "Dark Mode",
-//    showBackground = true
-//)
-//@Composable
-//fun PreviewMessageCard(){
-//    ComposeTestTheme {
-//        Conversation(messages = SampleData.conversationSample)
-//    }
-//}
-
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
-fun OnBoardingPreview(){
+fun MyAppPreview(){
     ComposeTestTheme {
-        OnBoardingScreen(onContinuedClick = {}, name="", onNameChange = {})
+        MyApp()
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
-fun OnConversationPreview(){
+fun AlignYourBodyPreview(){
     ComposeTestTheme {
-        Conversation(messages = SampleData.conversationSample)
+        HomeSection(R.string.align_your_body) {
+            AlignYourBodyRow()
+        }
     }
 }

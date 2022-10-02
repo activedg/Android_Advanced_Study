@@ -2,4 +2,20 @@
     <string name="app_name">ComposeTest</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
+    <string name="placeholder_search">Search</string>
+
+    <string name="align_your_body">Align your body</string>
+    <string name="favorite_collections">Favorite Collections</string>
+
+    <string name="ab1_inversions">Inversion</string>
+    <string name="ab2_quick_yoga">Quick Yoga</string>
+    <string name="ab3_stretching">Stretching</string>
+    <string name="ab4_tabata">Tabata</string>
+    <string name="ab5_hiit">Hiit</string>
+    <string name="ab6_pre_natal_yoga">Natal Yoga</string>
+
+    <string name="fc2_nature_meditations">Nature Meditation</string>
+
+    <string name="bottom_navigation_home">HOME</string>
+    <string name="bottom_navigation_profile">PROFILE</string>
 </resources>
