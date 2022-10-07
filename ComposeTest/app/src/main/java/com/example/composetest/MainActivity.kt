@@ -19,9 +19,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -238,7 +238,7 @@ private fun SootheBottomNavigation(
             // icon, label, selected, onclick
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Spa,
+                    imageVector = Icons.Default.Home,
                     contentDescription = null
                 )
             },

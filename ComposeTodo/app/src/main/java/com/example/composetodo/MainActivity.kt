@@ -3,23 +3,33 @@ package com.example.composetodo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Checkbox
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.composetodo.data.WellnessTask
 import com.example.composetodo.ui.theme.ComposeTodoTheme
 
@@ -31,11 +41,55 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    WellnessScreen()
+                    MainScreen()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MainScreen(){
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomNavigation(navController = navController) }
+    ) {
+        TodoNavGraph(navController = navController, modifier = Modifier.padding(it))
+    }
+
+}
+
+@Composable
+fun BottomNavigation(
+    items: List<BottomNavItem> = listOf(BottomNavItem.Home, BottomNavItem.Profile),
+    modifier: Modifier = Modifier,
+    navController: NavController
+){
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    NavigationBar(
+        modifier = modifier.wrapContentHeight(),
+        tonalElevation = 1.dp,
+    ) {
+        //icon, label,selected, onclick
+        items.forEach { item ->
+            NavigationBarItem(
+                selected = currentDestination?.hierarchy?.any { it.route == item.screenRoute } == true,
+                icon = {
+                       Icon(
+                           imageVector = item.image,
+                           contentDescription = null
+                       )
+                },
+                label = {
+                        Text(text = stringResource(id = item.title))
+                },
+                onClick = {
+                    navController.navigate(item.screenRoute)
+                })
         }
     }
 }
@@ -160,4 +214,19 @@ fun DefaultPreview() {
     ComposeTodoTheme {
         WellnessScreen()
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavPreview(){
+    ComposeTodoTheme {
+        MainScreen()
+    }
+}
+
+sealed class BottomNavItem(
+    @StringRes val title: Int, val image: ImageVector, val screenRoute: String
+){
+    object Home : BottomNavItem(R.string.home_screen, Icons.Default.Home, "HOME")
+    object Profile : BottomNavItem(R.string.profile_screen, Icons.Default.Person, "PROFILE")
 }
