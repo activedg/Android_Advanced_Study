@@ -2,4 +2,6 @@
     <string name="app_name">ComposeTodo</string>
     <string name="home_screen">Home</string>
     <string name="profile_screen">Profile</string>
+    <string name="todo_title">Todo List</string>
+    <string name="todo_search_hint">Search Title Here</string>
 </resources>

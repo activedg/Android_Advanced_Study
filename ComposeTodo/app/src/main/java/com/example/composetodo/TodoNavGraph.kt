@@ -2,25 +2,25 @@ package com.example.composetodo
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.composetodo.screen.TaskScreen
 
 @Composable
-fun TodoNavGraph(
+fun MainNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ){
     NavHost(
         navController = navController,
-        startDestination = "HOME"
+        startDestination = BottomNavItem.Home.screenRoute,
+        modifier = modifier
     ){
-        composable(route = "HOME"){
+        composable(route = BottomNavItem.Home.screenRoute){
             TaskScreen()
         }
-        composable(route = "PROFILE"){
+        composable(route = BottomNavItem.Profile.screenRoute){
             ProfileScreen()
         }
     }

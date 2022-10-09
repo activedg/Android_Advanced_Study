@@ -56,7 +56,7 @@ fun MainScreen(){
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
-        TodoNavGraph(navController = navController, modifier = Modifier.padding(it))
+        MainNavGraph(navController = navController, modifier = Modifier.padding(it))
     }
 
 }
@@ -88,8 +88,15 @@ fun BottomNavigation(
                         Text(text = stringResource(id = item.title))
                 },
                 onClick = {
-                    navController.navigate(item.screenRoute)
-                })
+                    navController.navigate(item.screenRoute){
+                        popUpTo(navController.graph.findStartDestination().id){
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+            )
         }
     }
 }

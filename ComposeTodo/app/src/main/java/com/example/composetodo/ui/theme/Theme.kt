@@ -18,7 +18,7 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple500,
-    secondary = Teal200
+    secondary = Teal200,
 
     /* Other default colors to override
     background = Color.White,
