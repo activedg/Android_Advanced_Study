@@ -1,5 +1,12 @@
 package com.example.composetodo.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,9 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composetodo.R
 import com.example.composetodo.data.TodoItem
-import com.example.composetodo.ui.theme.ComposeTodoTheme
-import com.example.composetodo.ui.theme.Ivory
-import com.example.composetodo.ui.theme.Teal200
+import com.example.composetodo.ui.theme.*
 
 @Composable
 fun TaskScreen(
@@ -39,7 +44,7 @@ fun TaskScreen(
                 fontSize = 24.sp,
                 modifier = Modifier.padding(24.dp),
             )
-            SearchBar(value = searchTitle, onTextChange = {searchTitle = it})
+            SearchBar(value = searchTitle, onTextChange = {searchTitle = it}, onCloseClick = {searchTitle = ""} )
             Spacer(modifier = Modifier.height(20.dp))
             TodoList()
         }
@@ -47,7 +52,7 @@ fun TaskScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 12.dp),
-            containerColor = Teal200
+//            containerColor = Teal200
         ){
             Icon(
                 imageVector = Icons.Default.Add,
@@ -64,7 +69,8 @@ fun TaskScreen(
 fun SearchBar(
     modifier: Modifier = Modifier,
     value: String,
-    onTextChange : (String) -> Unit
+    onTextChange : (String) -> Unit,
+    onCloseClick : () -> Unit
 ){
     TextField(
         value = value,
@@ -77,7 +83,6 @@ fun SearchBar(
         placeholder = {
             Text(stringResource(id = R.string.todo_search_hint))
         },
-        maxLines = 1,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
@@ -89,7 +94,17 @@ fun SearchBar(
             disabledIndicatorColor = Color.Transparent
         ),
         // 둥글게 처리
-        shape = MaterialTheme.shapes.medium
+        shape = MaterialTheme.shapes.medium,
+        trailingIcon = {
+            IconButton(
+                onClick = onCloseClick
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = null
+            )
+        } },
+        singleLine = true
     )
 }
 
@@ -127,15 +142,25 @@ fun TodoListItem(
     var expanded by rememberSaveable {
         mutableStateOf(false)
     }
-    Surface(
-        modifier
+    
+    val backgroundColor by animateColorAsState(
+        targetValue = if (item.checked.value) SkyBlue else Color.White )
+
+    Card(
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .padding(bottom = 16.dp),
         shape = MaterialTheme.shapes.medium,
-        color = Color.LightGray
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor
+        ),
+        border = BorderStroke(0.8.dp, Color.Black),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        )
     ){
-        Column {
+        Column(modifier = Modifier.animateContentSize()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
@@ -143,9 +168,7 @@ fun TodoListItem(
                 Checkbox(
                     checked = item.checked.value,
                     onCheckedChange = { item.checked.value = it },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Teal200
-                    )
+
                 )
                 Text(
                     text = item.title,
@@ -160,8 +183,18 @@ fun TodoListItem(
                         )
                 }
             }
+//            AnimatedVisibility(
+//                visible = expanded,
+                // animation custom 가능
+//                exit = slideOutVertically(
+//                    animationSpec = spring(stiffness = Spring.StiffnessLow)
+//                )
+//            )
             if (expanded){
-                
+                Text(
+                    text = item.description, modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .padding(bottom = 12.dp))
             }
         }
     }
