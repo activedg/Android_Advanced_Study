@@ -1,36 +1,52 @@
 package com.example.naversearchtest.ui
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.naversearchtest.domain.entity.NewsItem
 import com.example.naversearchtest.domain.usecase.GetSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.switchMap
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getSearchUseCase: GetSearchUseCase
 ) : ViewModel() {
-    private val _newsData = MutableStateFlow(mutableListOf<NewsItem>())
-    val newsData : StateFlow<List<NewsItem>> get() = _newsData
+    private val _newsPagingData = MutableStateFlow<PagingData<NewsItem>>(PagingData.empty())
+    val newsPagingData : StateFlow<PagingData<NewsItem>> get() = _newsPagingData
 
-    fun getSearchData(keyword: String?) : Boolean{
-        keyword?.let {
-            getSearchUseCase(keyword)
-                .onEach {
-                    _newsData.value = it.items as MutableList<NewsItem>
-                    Log.e("searchResult", it.toString())
-                }
-                .launchIn(viewModelScope)
-        }
+    private val _keyword = MutableLiveData<String>()
+    val keyword : LiveData<String> = _keyword
 
-        return false
+    val paging = _keyword.switchMap {
+        getSearchUseCase(it).cachedIn(viewModelScope).asLiveData()
     }
+
+    fun setKeyword(keyword: String){
+        _keyword.value = keyword
+    }
+
+//    fun getSearchData(keyword: String?) : Boolean{
+//        keyword?.let {
+//            getSearchUseCase(keyword)
+//                .catch {
+//                    Log.e("okhttpError", it.toString())
+//                }
+//                .onEach {
+//                    _newsPagingData.value = it
+//                }
+//                .launchIn(viewModelScope)
+//
+//            // cachedIn을 사용하여 캐싱 가능
+//        }
+//
+//        return false
+//    }
+
+//    fun getSearchData(keyword: String) : Flow<PagingData<NewsItem>> {
+//        return getSearchData(keyword).cachedIn(viewModelScope)
+//    }
 }

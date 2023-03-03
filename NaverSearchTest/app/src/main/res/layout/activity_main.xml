@@ -18,16 +18,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="@string/search_keyword_hint"
-        android:iconifiedByDefault="false"
-        android:onQueryTextSubmit="@{s -> viewmodel.getSearchData(s)}" />
+        android:iconifiedByDefault="false"/>
+<!--        android:onQueryTextSubmit="@{s -> viewmodel.getSearchData(s)}" -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_news_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:overScrollMode="never"
-        bindList="@{viewmodel.newsData}"/>
+        android:overScrollMode="never" />
 
 </LinearLayout>
 </layout>

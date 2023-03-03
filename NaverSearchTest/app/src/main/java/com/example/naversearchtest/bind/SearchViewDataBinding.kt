@@ -4,7 +4,7 @@ import android.widget.SearchView
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("setOnQueryTextListener")
-fun SearchView.setOnQueryTextListener(searchByKeyword : (String?) -> Unit){
+inline fun SearchView.setOnQueryTextListener(crossinline searchByKeyword : (String?) -> Unit){
     this.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
         override fun onQueryTextChange(newText: String?): Boolean {
             return false

@@ -6,6 +6,7 @@ import retrofit2.http.*
 interface NaverService {
     @GET ("/v1/search/news.json")
     suspend fun getSearchResult(
-        @Query("query") keyword: String
+        @Query("query") keyword: String,
+        @Query("start") start: Int? = null
     ) : NewsResult
 }
