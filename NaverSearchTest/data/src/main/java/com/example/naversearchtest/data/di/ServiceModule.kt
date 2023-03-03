@@ -1,6 +1,6 @@
-package com.example.naversearchtest.di
+package com.example.naversearchtest.data.di
 
-import com.example.naversearchtest.data.remote.NaverService
+import com.example.naversearchtest.data.api.NaverService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

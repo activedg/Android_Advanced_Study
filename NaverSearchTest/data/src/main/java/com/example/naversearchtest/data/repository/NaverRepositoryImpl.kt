@@ -1,16 +1,15 @@
 package com.example.naversearchtest.data.repository
 
-import com.example.naversearchtest.data.repository.remote.datasource.NaverDataSource
-import com.example.naversearchtest.domain.model.SearchData
-import com.example.naversearchtest.domain.model.SearchResponse
+import com.example.naversearchtest.data.remote.NaverRemoteDataSource
+import com.example.naversearchtest.domain.entity.NewsResult
 import com.example.naversearchtest.domain.repository.NaverRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NaverRepositoryImpl @Inject constructor(
-    private val naverDataSource: NaverDataSource
+    private val naverRemoteDataSource: NaverRemoteDataSource
 ): NaverRepository{
-    override suspend fun getSearchResult(searchData: SearchData): SearchResponse? {
-        // mapper 통해 구현 가능
-        return naverDataSource.getSearch(searchData)
+    override fun getSearchData(keyword: String): Flow<NewsResult> {
+        return naverRemoteDataSource.getSearchData(keyword)
     }
 }

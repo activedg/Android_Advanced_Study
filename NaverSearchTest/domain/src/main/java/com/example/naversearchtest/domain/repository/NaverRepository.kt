@@ -1,8 +1,8 @@
 package com.example.naversearchtest.domain.repository
 
-import com.example.naversearchtest.domain.model.SearchData
-import com.example.naversearchtest.domain.model.SearchResponse
+import com.example.naversearchtest.domain.entity.NewsResult
+import kotlinx.coroutines.flow.Flow
 
 interface NaverRepository {
-    suspend fun getSearchResult(searchData: SearchData): SearchResponse?
+    fun getSearchData(keyword: String) : Flow<NewsResult>
 }

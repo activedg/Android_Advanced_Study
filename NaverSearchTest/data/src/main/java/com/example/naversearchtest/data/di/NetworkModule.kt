@@ -1,8 +1,6 @@
-package com.example.naversearchtest.di
+package com.example.naversearchtest.data.di
 
-import com.example.naversearchtest.BuildConfig
-import com.example.naversearchtest.data.remote.NaverService
-import com.example.naversearchtest.utils.Utils.BASE_URL
+import com.example.naversearchtest.data.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +19,7 @@ object NetworkModule{
     @Singleton
     fun provideRetrofitInstance(gsonConverterFactory: GsonConverterFactory, client: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(gsonConverterFactory)
             .client(client)
             .build()

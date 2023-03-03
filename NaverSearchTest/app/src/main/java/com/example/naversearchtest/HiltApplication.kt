@@ -1,4 +1,4 @@
-package com.example.naversearchtest.di
+package com.example.naversearchtest
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

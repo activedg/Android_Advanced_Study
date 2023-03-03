@@ -1,8 +1,8 @@
-package com.example.naversearchtest.di
+package com.example.naversearchtest.data.di
 
 import com.example.naversearchtest.data.repository.NaverRepositoryImpl
-import com.example.naversearchtest.data.repository.remote.datasourceImpl.NaverDataSourceImpl
 import com.example.naversearchtest.domain.repository.NaverRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,11 +11,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+abstract class RepositoryModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideNaverRepository(naverDataSourceImpl: NaverDataSourceImpl) :NaverRepository{
-        return NaverRepositoryImpl(naverDataSourceImpl)
-    }
+    abstract fun bindNaverRepository(
+        naverRepositoryImpl: NaverRepositoryImpl
+    ) : NaverRepository
 }
