@@ -36,27 +36,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             }
 
-            svKeyword.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let {
-                        viewModel.setKeyword(query)
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean = false
-            })
+//            svKeyword.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+//                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    query?.let {
+//                        viewModel.setKeyword(query)
+//                    }
+//                    return false
+//                }
+//
+//                override fun onQueryTextChange(newText: String?): Boolean = false
+//            })
         }
 
         observe()
     }
 
     private fun observe(){
-        viewModel.paging.observe(this){
-            newsAdapter.submitData(lifecycle, it)
-        }
-//        viewModel.paging.flowWithLifecycle(lifecycle, Lifecycle.State.CREATED).onEach {
-//            newsAdapter.submitData(it)
-//        }.launchIn(lifecycleScope)
+        viewModel.pagingData.flowWithLifecycle(lifecycle, Lifecycle.State.CREATED).onEach {
+            newsAdapter.submitData(it)
+        }.launchIn(lifecycleScope)
     }
 }
