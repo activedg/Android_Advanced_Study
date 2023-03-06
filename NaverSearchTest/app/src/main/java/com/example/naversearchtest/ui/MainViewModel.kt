@@ -1,5 +1,6 @@
 package com.example.naversearchtest.ui
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import com.example.naversearchtest.domain.usecase.GetSearchUseCase
@@ -14,6 +15,7 @@ class MainViewModel @Inject constructor(
     private val getSearchUseCase: GetSearchUseCase
 ) : ViewModel() {
     private val _keyword = MutableStateFlow("")
+    private var test = 1
 
     val pagingData = _keyword
         .filter { k -> k.isNotEmpty() }
@@ -25,5 +27,10 @@ class MainViewModel @Inject constructor(
     fun setKeyword(query: String) : Boolean{
         _keyword.value = query
         return false
+    }
+
+    fun test() {
+        test++
+        Log.e("test",test.toString())
     }
 }
