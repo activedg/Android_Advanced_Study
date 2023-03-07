@@ -1,21 +1,24 @@
 package com.example.naversearchtest.ui
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
+import com.example.naversearchtest.base.BaseViewModel
 import com.example.naversearchtest.domain.usecase.GetSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import com.example.naversearchtest.ui.MainContract.*
 
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel @Inject constructor(
     private val getSearchUseCase: GetSearchUseCase
-) : ViewModel() {
+) : BaseViewModel<MainState, MainSideEffect, MainEvent>() {
+    override val _viewState: MutableStateFlow<MainState> = MutableStateFlow(MainState.Initial)
+
     private val _keyword = MutableStateFlow("")
-    private var test = 1
+    val keword = _keyword.asStateFlow()
 
     val pagingData = _keyword
         .filter { k -> k.isNotEmpty() }
@@ -24,13 +27,15 @@ class MainViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    fun setKeyword(query: String) : Boolean{
+    private fun searchByKeyword(query: String) {
         _keyword.value = query
-        return false
     }
 
-    fun test() {
-        test++
-        Log.e("test",test.toString())
+    override fun handleEvents(event: MainEvent) {
+        when(event){
+            is MainEvent.SearchKeyword -> {
+                searchByKeyword(event.query)
+            }
+        }
     }
 }

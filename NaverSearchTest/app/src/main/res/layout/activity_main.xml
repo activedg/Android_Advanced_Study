@@ -2,7 +2,7 @@
 <layout>
     <data>
         <variable
-            name="viewmodel"
+            name="mainViewModel"
             type="com.example.naversearchtest.ui.MainViewModel" />
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,15 +18,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="@string/search_keyword_hint"
-        android:onQueryTextChange="@{s -> false}"
-        android:onQueryTextSubmit="@{s -> viewmodel.setKeyword(s)}"
         android:iconifiedByDefault="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:text="@{mainViewModel.keword}"
+        android:textSize="16sp"
+        tools:text="검색된키워드키워드키워드"/>
 
     <Button
         android:id="@+id/btn_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickThrottle="@{() -> viewmodel.test()}"
         android:text="test" />
 
     <androidx.recyclerview.widget.RecyclerView
