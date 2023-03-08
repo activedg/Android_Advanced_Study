@@ -6,6 +6,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.naversearchtest.R
 import com.example.naversearchtest.adapter.NewsResultListAdapter
@@ -18,41 +21,16 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val viewModel by viewModels<MainViewModel>()
-    private val newsAdapter by lazy {
-        NewsResultListAdapter(
-            onClick = {
-                Log.e("newsItemClick", it.toString())
-            }
-        )
-    }
     override fun initView() {
         with(binding){
-            mainViewModel = viewModel
-
-            rvNewsResult.apply {
-                adapter = newsAdapter
-                layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-            }
-
-            svKeyword.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let {
-                        viewModel.setEvent(MainEvent.SearchKeyword(it))
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean = false
-            })
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
         }
 
         observe()
     }
 
     private fun observe(){
-        viewModel.pagingData.flowWithLifecycle(lifecycle, Lifecycle.State.CREATED).onEach {
-            newsAdapter.submitData(it)
-        }.launchIn(lifecycleScope)
+
     }
 }

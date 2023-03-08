@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="resultViewModel"
+            type="com.example.naversearchtest.ui.result.SearchResultViewModel" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibleInvisible="@{!resultViewModel.searchBarShown}"
+            android:layout_margin="20dp">
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/sb_result"
+                android:layout_width="match_parent"
+                android:text="@{resultViewModel.keyword}"
+                android:layout_height="wrap_content"
+                app:defaultMarginsEnabled="false"/>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_news_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:overScrollMode="never"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibleInvisible="@{!resultViewModel.errorShown}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:visibleInvisible="@{resultViewModel.errorShown}">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="검색 결과가 없습니다."/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <com.google.android.material.search.SearchView
+            android:id="@+id/sv_keyword_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_keyword_hint"
+            app:layout_anchor="@id/sb_result"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

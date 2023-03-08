@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="searchViewModel"
+            type="com.example.naversearchtest.ui.search.SearchViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/sb_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/search_keyword_hint"
+            android:layout_marginHorizontal="20dp"
+            app:defaultMarginsEnabled="false" />
+
+<!--        <com.google.android.material.search.SearchView-->
+<!--            android:id="@+id/sv_keyword"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:defaultQueryHint="@string/search_keyword_hint"-->
+<!--            app:layout_anchor="@id/sb_keyword" />-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

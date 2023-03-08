@@ -3,13 +3,23 @@ package com.example.naversearchtest.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<E : ViewModelType.Event, SE : ViewModelType.SideEffect> : ViewModel() {
-    // 화면 전체에 대한 State 가 필요 없는 경우
+abstract class BaseStateViewModel<S : ViewModelType.State, E : ViewModelType.Event, SE : ViewModelType.SideEffect> :
+    ViewModel()
+{
+    protected abstract val _viewState : MutableStateFlow<S>
+    val viewState get() = _viewState
+
     private val _sideEffect : Channel<SE> = Channel()
     val sideEffect = _sideEffect.receiveAsFlow()
+
+    protected fun setViewState(state: S){
+        _viewState.value = state
+    }
 
     protected fun sendSideEffect(effect: SE){
         viewModelScope.launch {

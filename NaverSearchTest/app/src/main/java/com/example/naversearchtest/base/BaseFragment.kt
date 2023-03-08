@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -24,29 +26,21 @@ abstract class BaseFragment<VB : ViewDataBinding> (@LayoutRes private val layout
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         initView()
-        observeData()
+        observe()
     }
 
     abstract fun initView()
-    abstract fun observeData()
+    abstract fun observe()
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    protected inline fun <T: Any> Flow<T>.bind(
-        crossinline action: () -> Unit
-    ){
-        this.onEach {
-            action()
-        }.launchIn(lifecycleScope)
     }
 }
