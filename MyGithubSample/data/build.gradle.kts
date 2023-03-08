@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = AppConfig.NAMESPACE
+    namespace = "com.example.mygithubsample.data"
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {

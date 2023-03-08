@@ -1,9 +1,9 @@
-package com.example.mygithubsample
+package com.example.mygithubsample.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.example.mygithubsample.databinding.ActivityMainBinding
+import com.example.mygithubsample.home.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

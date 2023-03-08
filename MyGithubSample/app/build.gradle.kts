@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = AppConfig.NAMESPACE
+    namespace = AppConfig.APPLICATION_ID
     compileSdk = AppConfig.COMPILE_SDK
 
     defaultConfig {
-        applicationId = AppConfig.NAMESPACE
+        applicationId = AppConfig.APPLICATION_ID
         minSdk = AppConfig.MIN_SDK
         targetSdk = AppConfig.TARGET_SDK
         versionCode = AppConfig.VERSION_CODE
@@ -39,6 +39,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":feature:home"))
     implementationAndroidX()
     implementationCoroutine()
     implementationHilt()
