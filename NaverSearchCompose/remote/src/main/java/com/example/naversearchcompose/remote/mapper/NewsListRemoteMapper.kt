@@ -16,7 +16,7 @@ internal object NewsListRemoteMapper : Mapper<GetNewsListResponse, Pair<List<New
                 pubDate = it.pubDate
             )
         } to PageConfig(
-            display = from.display,
+            page = from.display,
             start = from.start,
             total = from.total
         )

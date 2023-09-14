@@ -56,9 +56,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":remote"))
+
     AndroidX()
     Compose()
     Coroutine()
     Hilt()
     Orbit()
+
+    implementations(
+        Utils.Timber
+    )
 }

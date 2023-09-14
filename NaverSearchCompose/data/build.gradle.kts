@@ -36,6 +36,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+    implementation(project(":domain"))
+
     Coroutine()
     Hilt()
+
+    implementations(
+        Utils.Timber
+    )
 }

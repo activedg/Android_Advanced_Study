@@ -32,9 +32,6 @@ object Version{
     const val ComposeLifecycle = "2.6.1"
     const val ComposeConstraint = "1.0.1"
 
-    // Paging
-    const val Paging = "3.2.0"
-
     // Test
     const val JUnit = "4.13.2"
     const val Ext = "1.1.5"
@@ -110,13 +107,6 @@ fun DependencyHandlerScope.Hilt() {
     )
     kapts(
         "com.google.dagger:hilt-android-compiler:${Version.Hilt}"
-    )
-}
-
-fun DependencyHandlerScope.Paging() {
-    implementations(
-        "androidx.paging:paging-runtime:${Version.Paging}",
-        "androidx.paging:paging-compose:${Version.Paging}"
     )
 }
 
