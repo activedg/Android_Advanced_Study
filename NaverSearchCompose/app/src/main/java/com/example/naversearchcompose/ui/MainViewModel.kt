@@ -1,7 +1,9 @@
 package com.example.naversearchcompose.ui
 
+import androidx.lifecycle.SavedStateHandle
 import com.example.naversearchcompose.base.BaseViewModel
 import com.example.naversearchcompose.domain.usecase.FetchNewsListUseCase
+import com.example.naversearchcompose.model.NewsUiModel
 import com.example.naversearchcompose.model.PageState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.example.naversearchcompose.ui.MainContract.*
@@ -11,8 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val fetchNewsListUseCase: FetchNewsListUseCase
-): BaseViewModel<MainState, MainSideEffect>(){
+    private val fetchNewsListUseCase: FetchNewsListUseCase,
+    savedStateHandle: SavedStateHandle
+): BaseViewModel<MainState, MainSideEffect>(savedStateHandle){
     override fun createInitialState(): MainState = MainState()
 
     init {
@@ -30,7 +33,14 @@ class MainViewModel @Inject constructor(
             }.onSuccess {
                 reduce {
                     state.copy(
-                        newsList = state.newsList + it,
+                        newsList = state.newsList + it.map {
+                            NewsUiModel(
+                                pubDate = it.pubDate,
+                                title = it.title,
+                                description = it.description,
+                                link = it.link
+                            )
+                        },
                         pageState = if (it.size in 0 until 20) PageState.EXHAUST else PageState.IDLE
                     )
                 }

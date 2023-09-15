@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.naversearchcompose.domain.model.News
+import com.example.naversearchcompose.model.NewsUiModel
 import com.example.naversearchcompose.model.PageState
 import com.example.naversearchcompose.ui.MainContract.*
 
@@ -84,7 +84,7 @@ private fun MainScreen(
 
 @Composable
 private fun NewsItem(
-    news: News,
+    news: NewsUiModel,
     isLastItem: Boolean = false
 ){
     Column {

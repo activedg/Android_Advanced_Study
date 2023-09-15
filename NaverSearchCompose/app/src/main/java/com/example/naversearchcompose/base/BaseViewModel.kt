@@ -1,6 +1,7 @@
 package com.example.naversearchcompose.base
 
 import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,13 +18,18 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
-abstract class BaseViewModel<STATE: Any, SIDE_EFFECT: Any> : ContainerHost<STATE, SIDE_EFFECT>, ViewModel() {
+abstract class BaseViewModel<STATE: Parcelable, SIDE_EFFECT: Any> (
+    savedStateHandle: SavedStateHandle
+): ContainerHost<STATE, SIDE_EFFECT>, ViewModel() {
     private val initialState by lazy {
         createInitialState()
     }
     protected abstract fun createInitialState(): STATE
 
-    override val container = container<STATE, SIDE_EFFECT>(initialState)
+    final override val container = container<STATE, SIDE_EFFECT>(
+        initialState = initialState,
+        savedStateHandle = savedStateHandle
+    )
 
     val state : StateFlow<STATE> = container.stateFlow
     val sideEffect : Flow<SIDE_EFFECT> = container.sideEffectFlow
