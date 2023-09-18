@@ -7,4 +7,6 @@ interface NewsRepository {
         query: String
     ): List<News>
 
+    suspend fun clearPageConfig()
+
 }

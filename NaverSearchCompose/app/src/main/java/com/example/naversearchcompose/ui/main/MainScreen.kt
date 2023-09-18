@@ -1,4 +1,4 @@
-package com.example.naversearchcompose.ui
+package com.example.naversearchcompose.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.naversearchcompose.model.NewsUiModel
 import com.example.naversearchcompose.model.PageState
-import com.example.naversearchcompose.ui.MainContract.*
+import com.example.naversearchcompose.ui.main.MainContract.*
 
 @Composable
 fun MainRoute(

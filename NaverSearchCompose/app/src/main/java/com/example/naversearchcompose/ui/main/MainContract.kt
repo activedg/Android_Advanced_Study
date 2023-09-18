@@ -1,4 +1,4 @@
-package com.example.naversearchcompose.ui
+package com.example.naversearchcompose.ui.main
 
 import android.os.Parcelable
 import com.example.naversearchcompose.model.NewsUiModel

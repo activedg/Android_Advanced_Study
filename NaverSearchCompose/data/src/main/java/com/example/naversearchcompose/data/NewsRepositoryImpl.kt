@@ -28,4 +28,8 @@ internal class NewsRepositoryImpl @Inject constructor(
 
         return result.first.map(NewsDataMapper::mapToRight)
     }
+
+    override suspend fun clearPageConfig() {
+        pageConfig.value = PageConfig()
+    }
 }
