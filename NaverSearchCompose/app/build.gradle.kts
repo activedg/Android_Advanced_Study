@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":local"))
     implementation(project(":remote"))
 
     AndroidX()

@@ -1,6 +1,6 @@
 package com.example.naversearchcompose.remote.di
 
-import com.example.naversearchcompose.data.source.NewsRemoteDataSource
+import com.example.naversearchcompose.data.source.remote.NewsRemoteDataSource
 import com.example.naversearchcompose.remote.NewsRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module

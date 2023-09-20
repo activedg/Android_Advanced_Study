@@ -32,6 +32,7 @@ class MainViewModel @Inject constructor(
 
         reduce { state.copy(pageState = PageState.LOADING) }
 
+
         runCatching {
             fetchNewsListUseCase("네이버")
         }.onSuccess {

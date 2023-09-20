@@ -10,18 +10,24 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun TestRoute(
-    navigateToMain: () -> Unit
+    navigateToMain: () -> Unit,
+    navigateToMemo: () -> Unit
 ){
-    TestScreen(navigateToMain = navigateToMain)
+    TestScreen(navigateToMain = navigateToMain, navigateToMemo = navigateToMemo)
 }
 
 @Composable
 private fun TestScreen(
-    navigateToMain : () -> Unit
+    navigateToMain : () -> Unit,
+    navigateToMemo: () -> Unit
 ){
     Box(modifier = Modifier.fillMaxSize()){
         Button(onClick = navigateToMain, modifier = Modifier.align(Alignment.Center)) {
             Text(text = "메인으로")
+        }
+
+        Button(onClick = navigateToMemo, modifier = Modifier.align(Alignment.BottomCenter)) {
+            Text(text = "메모로")
         }
     }
 }

@@ -32,6 +32,9 @@ object Version{
     const val ComposeLifecycle = "2.6.1"
     const val ComposeConstraint = "1.0.1"
 
+    // Room
+    const val Room = "2.6.0-beta01"
+
     // Test
     const val JUnit = "4.13.2"
     const val Ext = "1.1.5"
@@ -134,6 +137,11 @@ fun DependencyHandlerScope.Test() {
 fun DependencyHandlerScope.Local() {
     implementations(
         "androidx.datastore:datastore-preferences:${Version.DataStore}",
+        "androidx.room:room-runtime:${Version.Room}",
+        "androidx.room:room-ktx:${Version.Room}",
+    )
+    kapts(
+        "androidx.room:room-compiler:${Version.Room}"
     )
 }
 
