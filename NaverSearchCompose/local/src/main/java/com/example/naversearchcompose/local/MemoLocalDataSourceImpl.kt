@@ -38,4 +38,12 @@ internal class MemoLocalDataSourceImpl @Inject constructor(
             memoDao.saveAll(this)
         }
     }
+
+    override suspend fun updateAllRead() = withContext(dispatcher){
+        memoDao.updateAllRead()
+    }
+
+    override suspend fun deleteAll() = withContext(dispatcher){
+        memoDao.deleteAll()
+    }
 }

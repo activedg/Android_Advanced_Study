@@ -5,8 +5,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UpdateMemoReadUseCase @Inject constructor(
+class DeleteAllMemoUseCase @Inject constructor(
     private val repository: MemoRepository
 ){
-    suspend operator fun invoke() = repository.updateAllRead()
+    suspend operator fun invoke() = repository.deleteAll()
 }

@@ -22,4 +22,12 @@ internal class MemoRepositoryImpl @Inject constructor(
     override suspend fun insertRandomList() {
         return local.insertRandomList()
     }
+
+    override suspend fun updateAllRead() {
+        return local.updateAllRead()
+    }
+
+    override suspend fun deleteAll() {
+        return local.deleteAll()
+    }
 }

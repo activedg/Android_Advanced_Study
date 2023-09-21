@@ -14,4 +14,10 @@ internal interface MemoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAll(memoList: List<MemoEntity>)
+
+    @Query("UPDATE memo SET isRead = 1 WHERE isRead = 0")
+    suspend fun updateAllRead()
+
+    @Query("DELETE FROM memo")
+    suspend fun deleteAll()
 }

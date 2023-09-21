@@ -7,4 +7,6 @@ interface MemoLocalDataSource {
     fun fetchList() : Flow<List<MemoData>>
     suspend fun insertList(memoList: List<MemoData>)
     suspend fun insertRandomList()
+    suspend fun updateAllRead()
+    suspend fun deleteAll()
 }

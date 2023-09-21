@@ -1,5 +1,6 @@
 package com.example.naversearchcompose.ui.memo
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
@@ -29,40 +31,46 @@ import com.example.naversearchcompose.ui.theme.NaverSearchComposeTheme
 fun MemoRoute(
     viewModel : MemoViewModel = hiltViewModel()
 ){
-    // Local에서 가져와서 읽기
-    // 읽음 여부 처리하기(페이지 들어가는 순간 먼저 로직 수행 -> 읽음 처리)
-    // Room에서 읽음 여부 처리하는 거 테스트
-    // 테스트용으로 데이터 추가하는 버튼도 만들기
-
     val state: MemoState by viewModel.state.collectAsStateWithLifecycle()
 
     MemoScreen(
         state = state,
-        onClickAdd = viewModel::addMemos
+        onClickAdd = viewModel::addMemos,
+        onClickDelete = viewModel::deleteMemos
     )
 }
 
 @Composable
 private fun MemoScreen(
     state : MemoState,
-    onClickAdd: () -> Unit = {}
+    onClickAdd: () -> Unit = {},
+    onClickDelete: () -> Unit = {}
 ){
     Scaffold {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(it),
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            LazyColumn{
-                items(state.memoList){ item ->
-                    MemoContent(memo = item)
+        ){
+            item {
+                Row {
+                    Button(onClick = onClickAdd) {
+                        Text(text = "메모 추가하기")
+                    }
+
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    Button(onClick = onClickDelete) {
+                        Text(text = "메모 삭제하기")
+                    }
                 }
+
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(onClick = onClickAdd) {
-                Text(text = "추가")
+            items(state.memoList){ item ->
+                MemoContent(memo = item)
             }
         }
     }
@@ -73,7 +81,7 @@ private fun MemoContent(
     memo: MemoUiModel,
 ){
     Row(
-        modifier = Modifier.padding(24.dp)
+        modifier = Modifier.padding(horizontal = 20.dp)
     ) {
         Text(text = memo.content)
 

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface MemoRepository {
     fun fetchList() : Flow<List<Memo>>
     suspend fun updateList(memoList: List<Memo>)
-
     suspend fun insertRandomList()
+    suspend fun updateAllRead()
+    suspend fun deleteAll()
 }
